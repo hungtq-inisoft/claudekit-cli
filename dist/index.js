@@ -27559,14 +27559,19 @@ class FileDownloader {
     await mkdir9(destDir, { recursive: true });
     output.info(`Downloading ${name}${size ? ` (${formatBytes(size)})` : ""}...`);
     const headers = {};
+    const isTarballUrl = url.includes("/tarball/") || url.includes("/zipball/");
     if (token && url.includes("api.github.com")) {
       headers.Authorization = `Bearer ${token}`;
-      headers.Accept = "application/octet-stream";
       headers["X-GitHub-Api-Version"] = "2022-11-28";
-    } else {
+      if (isTarballUrl) {
+        headers.Accept = "application/vnd.github+json";
+      } else {
+        headers.Accept = "application/octet-stream";
+      }
+    } else if (!isTarballUrl) {
       headers.Accept = "application/octet-stream";
     }
-    const response = await fetch(url, { headers });
+    const response = await fetch(url, { headers, redirect: "follow" });
     if (!response.ok) {
       throw new DownloadError(`Failed to download: ${response.statusText}`);
     }

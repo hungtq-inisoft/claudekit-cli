@@ -162,17 +162,28 @@ export class FileDownloader {
 
 		const headers: Record<string, string> = {};
 
+		// Check if this is a GitHub tarball/zipball URL (needs different Accept header)
+		const isTarballUrl = url.includes("/tarball/") || url.includes("/zipball/");
+
 		// Add authentication for GitHub API URLs
 		if (token && url.includes("api.github.com")) {
 			headers.Authorization = `Bearer ${token}`;
-			// Use application/octet-stream for asset downloads (not vnd.github+json)
-			headers.Accept = "application/octet-stream";
 			headers["X-GitHub-Api-Version"] = "2022-11-28";
-		} else {
+
+			if (isTarballUrl) {
+				// Tarball/zipball endpoints need vnd.github+json to get redirect
+				headers.Accept = "application/vnd.github+json";
+			} else {
+				// Asset downloads need octet-stream
+				headers.Accept = "application/octet-stream";
+			}
+		} else if (!isTarballUrl) {
+			// Non-API URLs that aren't tarballs
 			headers.Accept = "application/octet-stream";
 		}
+		// For non-API tarball URLs (github.com/...archive/...), no special Accept header needed
 
-		const response = await fetch(url, { headers });
+		const response = await fetch(url, { headers, redirect: "follow" });
 
 		if (!response.ok) {
 			throw new DownloadError(`Failed to download: ${response.statusText}`);
