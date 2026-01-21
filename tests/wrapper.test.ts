@@ -4,6 +4,7 @@
  */
 
 import { describe, expect, test } from "bun:test";
+import { execSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -25,6 +26,10 @@ describe("bin/ck.js wrapper", () => {
 		// Skip in CI - dist is built after tests run in the release workflow
 		test.skipIf(isCI)("dist/index.js exists after build", () => {
 			const distPath = join(projectRoot, "dist", "index.js");
+			// Ensure dist exists locally by running the build once
+			if (!existsSync(distPath)) {
+				execSync("bun run build", { cwd: projectRoot, stdio: "pipe" });
+			}
 			expect(existsSync(distPath)).toBe(true);
 		});
 	});

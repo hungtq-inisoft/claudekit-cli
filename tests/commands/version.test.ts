@@ -54,14 +54,14 @@ describe("Version Command", () => {
 			const engineerKit = AVAILABLE_KITS.engineer;
 			expect(engineerKit.name).toBe("ClaudeKit Engineer");
 			expect(engineerKit.repo).toBe("claudekit-engineer");
-			expect(engineerKit.owner).toBe("claudekit");
+			expect(engineerKit.owner).toBe("hungtq-inisoft");
 		});
 
 		test("should have marketing kit configured", () => {
 			const marketingKit = AVAILABLE_KITS.marketing;
 			expect(marketingKit.name).toBe("ClaudeKit Marketing");
 			expect(marketingKit.repo).toBe("claudekit-marketing");
-			expect(marketingKit.owner).toBe("claudekit");
+			expect(marketingKit.owner).toBe("hungtq-inisoft");
 		});
 	});
 

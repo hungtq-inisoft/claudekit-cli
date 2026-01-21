@@ -62,12 +62,12 @@ const CACHE_FILENAME = "config-update-cache.json";
 
 /**
  * GitHub repo info for each kit type
- * SECURITY: Owner hardcoded to official ClaudeKit org to prevent supply chain attacks.
+ * SECURITY: Owner hardcoded to official org to prevent supply chain attacks.
  * Users must fork the CLI if they need different upstream repos.
  */
 const KIT_REPOS: Record<string, { owner: string; repo: string }> = {
-	engineer: { owner: "claudekit", repo: "claudekit-engineer" },
-	marketing: { owner: "claudekit", repo: "claudekit-marketing" },
+	engineer: { owner: "hungtq-inisoft", repo: "claudekit-engineer" },
+	marketing: { owner: "hungtq-inisoft", repo: "claudekit-marketing" },
 };
 
 /**

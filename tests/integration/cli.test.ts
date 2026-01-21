@@ -5,6 +5,12 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// CI environment detection
+const isCI = process.env.CI === "true" || process.env.GITHUB_ACTIONS === "true";
+// Integration tests are opt-in because they require network access + valid GitHub auth
+const runIntegrationTests =
+	process.env.CK_RUN_INTEGRATION_TESTS === "true" || process.env.CK_RUN_INTEGRATION_TESTS === "1";
+
 /**
  * Integration tests for CLI commands
  * These tests actually run the CLI and verify the results
@@ -12,21 +18,13 @@ import { fileURLToPath } from "node:url";
  * NOTE: These tests require network access and valid GitHub authentication.
  * Set CK_TEST_RELEASE env var to specify release version (default: fetches latest)
  */
-describe("CLI Integration Tests", () => {
+describe.skipIf(isCI || !runIntegrationTests)("CLI Integration Tests", () => {
 	let testDir: string;
 	let releaseVersion: string;
 	const __dirname = join(fileURLToPath(import.meta.url), "..", "..", "..");
 	const cliPath = join(__dirname, "dist", "index.js");
 
-	// Skip integration tests in CI environments for now due to execution issues
-	const isCI = process.env.CI === "true" || process.env.GITHUB_ACTIONS === "true";
-
 	beforeEach(async () => {
-		// Skip in CI
-		if (isCI) {
-			return;
-		}
-
 		// Create test directory
 		testDir = join(process.cwd(), "test-integration", `cli-test-${Date.now()}`);
 		await mkdir(testDir, { recursive: true });
@@ -55,11 +53,6 @@ describe("CLI Integration Tests", () => {
 	});
 
 	afterEach(async () => {
-		// Skip in CI
-		if (isCI) {
-			return;
-		}
-
 		// Cleanup test directory
 		if (existsSync(testDir)) {
 			await rm(testDir, { recursive: true, force: true });
@@ -68,10 +61,6 @@ describe("CLI Integration Tests", () => {
 
 	describe("ck new command", () => {
 		test("should create new project in specified directory", async () => {
-			if (isCI) {
-				return;
-			}
-
 			const projectDir = join(testDir, "test-ck-new");
 
 			try {
@@ -97,10 +86,6 @@ describe("CLI Integration Tests", () => {
 		}, 120000); // 2 minute timeout for the test
 
 		test("should create project with correct file contents", async () => {
-			if (isCI) {
-				return;
-			}
-
 			const projectDir = join(testDir, "test-content");
 
 			try {
@@ -123,10 +108,6 @@ describe("CLI Integration Tests", () => {
 		}, 120000);
 
 		test("should not overwrite existing project without confirmation", async () => {
-			if (isCI) {
-				return;
-			}
-
 			const projectDir = join(testDir, "test-no-overwrite");
 
 			// Create existing directory with a file
@@ -155,10 +136,6 @@ describe("CLI Integration Tests", () => {
 
 	describe("ck update command", () => {
 		test("should update existing project", async () => {
-			if (isCI) {
-				return;
-			}
-
 			const projectDir = join(testDir, "test-ck-update");
 
 			// First create a project with --kit, --force, and --version flags
@@ -194,10 +171,6 @@ describe("CLI Integration Tests", () => {
 		}, 120000);
 
 		test("should fail when not in a project directory", async () => {
-			if (isCI) {
-				return;
-			}
-
 			const emptyDir = join(testDir, "empty");
 			await mkdir(emptyDir, { recursive: true });
 

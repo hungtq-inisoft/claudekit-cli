@@ -2,9 +2,9 @@
 node_modules/
 
 # Build output directories
-dist/
-build/
-out/
+# dist/
+# build/
+# out/
 tmp/
 temp/
 
@@ -91,7 +91,7 @@ jspm_packages/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist
 
 # Gatsby files
 .cache/

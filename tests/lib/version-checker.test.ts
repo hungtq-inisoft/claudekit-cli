@@ -135,7 +135,7 @@ describe("VersionChecker", () => {
 			currentVersion: "v1.0.0",
 			latestVersion: "v1.1.0",
 			updateAvailable: true,
-			releaseUrl: "https://github.com/claudekit/claudekit-engineer/releases/tag/v1.1.0",
+			releaseUrl: "https://github.com/hungtq-inisoft/claudekit-engineer/releases/tag/v1.1.0",
 		};
 
 		// Just verify it doesn't throw
@@ -147,7 +147,7 @@ describe("VersionChecker", () => {
 			currentVersion: "v1.0.0",
 			latestVersion: "v1.0.0",
 			updateAvailable: false,
-			releaseUrl: "https://github.com/claudekit/claudekit-engineer/releases/tag/v1.0.0",
+			releaseUrl: "https://github.com/hungtq-inisoft/claudekit-engineer/releases/tag/v1.0.0",
 		};
 
 		// Just verify it doesn't throw and doesn't log

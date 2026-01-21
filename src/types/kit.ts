@@ -26,13 +26,13 @@ export const AVAILABLE_KITS: Record<KitType, KitConfig> = {
 	engineer: {
 		name: "ClaudeKit Engineer",
 		repo: "claudekit-engineer",
-		owner: "claudekit",
+		owner: "hungtq-inisoft",
 		description: "Engineering toolkit for building with Claude",
 	},
 	marketing: {
 		name: "ClaudeKit Marketing",
 		repo: "claudekit-marketing",
-		owner: "claudekit",
+		owner: "hungtq-inisoft",
 		description: "Marketing automation toolkit for Claude",
 	},
 };
