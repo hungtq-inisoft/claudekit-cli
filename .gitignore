@@ -135,11 +135,11 @@ logs.txt
 repomix-output.xml
 
 # Compiled binaries (keep wrapper script)
-ck
-bin/ck-*
-bin/ck
-bin/*.exe
-bin/
+# ck
+# bin/ck-*
+# bin/ck
+# bin/*.exe
+# bin/
 
 # Test integration
 test-integration/
